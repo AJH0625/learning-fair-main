@@ -1,18 +1,22 @@
 from flask import Flask, request, redirect
 from flask_pymongo import PyMongo
+from dotenv import load_dotenv
+import os
 import pymysql
 
-conn = pymysql.connect(host='localhost',
-                       user='root',
-                       password='Apple228328!',
-                       db='SKKU_LF',
+load_dotenv()
+
+conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
                        charset='utf8')
 
-sql = "INSERT INTO user (user_name, student_num) VALUES (%s, %s)"
+sql = "INSERT INTO user_test (user_test_name, uset_test_num) VALUES (%s, %d)"
 
 app = Flask(__name__)
  
- 
+
 nextId = 4
 Users = [
     {'id': 1, 'Student_ID': 2020311271, 'User_name': '장지원'},
