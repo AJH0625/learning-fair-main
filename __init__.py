@@ -53,6 +53,17 @@ def getContents():
     liTags = ''
     return liTags
 
+def getProjects(id):
+    Projects = f"""
+                SELECT *
+                FROM project
+                WHERE project_id = {id}
+                """
+    with conn.cursor() as cur:
+            cur.execute(Projects)
+            project_data = cur.fetchall()
+    return project_data
+
 def getTagContents(tag):
     TagContents = f"""
                    SELECT *
@@ -84,9 +95,6 @@ def index():
             "<br><a href = '/logout'>로그아웃</a>"
 
     return template(getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
-
-    
- 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -151,6 +159,14 @@ def class_():
         <h1>class가 {class_code}인 경우 데이터임.</h1>
         '''
         return templates(getClassContents(class_code), content)
+
+@app.route('/project/<int:id>/')
+def project(id):
+    Project = getProjects(id)[0]
+    title = Project[0]
+    body = Project[10]
+    return templates(getContents(), f'<h2>{title}</h2>{body}')
+    
 
 @app.route('/logout')
 def logout():
