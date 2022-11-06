@@ -1,4 +1,5 @@
 from flask import Flask, request, redirect, jsonify, session, url_for, app
+from flask_cors import CORS
 from dotenv import load_dotenv
 from markupsafe import escape
 import os
@@ -9,6 +10,7 @@ import datetime
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'secretkey'
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60)
 
@@ -119,6 +121,11 @@ def login():
             cur.execute(sql, (User_name, Student_ID, User_major, User_login_time))
         conn.commit()
         return redirect(url_for('index'))
+        
+
+@app.route('/testjson')
+def testjson():
+    return jsonify({"test":"hello"})
 
 @app.route('/tag/')
 def tag():
