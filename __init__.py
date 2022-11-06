@@ -59,8 +59,7 @@ def getTagContents(tag):
     with conn.cursor() as cur:
             cur.execute(TagContents)
             tag_data = cur.fetchall()
-    print(jsonify(tag_data))
-    return jsonify(tag_data)
+    return tag_data
 
 def getClassContents(class_code):
     ClassContents = f"""
@@ -70,9 +69,10 @@ def getClassContents(class_code):
                    ORDER BY RAND()
                    """
     with conn.cursor() as cur:
-            cur.execute(ClassContents)
-            class_data = cur.fetchall()
+        cur.execute(ClassContents)
+        class_data = cur.fetchall()
     return class_data
+
 @app.route('/')
 def index():
     return template(getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
@@ -134,7 +134,7 @@ def class_board():
         content = '''
         <form action="/class_board/">
         <ol>
-        <li><a href="?class="DASF_I1"">DASF_I1</a></li>
+        <li><a href="?class='DASF_I1'">DASF_I1</a></li>
         <li><a href="?class='DASF_I2'">DASF_I2</a></li>
         <li><a href="?class='DASF_I3'">DASF_I3</a></li>
         </ol>
