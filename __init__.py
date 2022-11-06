@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, jsonify
 from dotenv import load_dotenv
 import os
 import pymysql
@@ -59,20 +59,20 @@ def getTagContents(tag):
     with conn.cursor() as cur:
             cur.execute(TagContents)
             tag_data = cur.fetchall()
-    return tag_data
+    print(jsonify(tag_data))
+    return jsonify(tag_data)
 
-def getClassContents(class_name):
+def getClassContents(class_code):
     ClassContents = f"""
                    SELECT *
                    FROM project
-                   WHERE class_name = {class_name}
+                   WHERE class_name = {class_code}
                    ORDER BY RAND()
                    """
     with conn.cursor() as cur:
             cur.execute(ClassContents)
             class_data = cur.fetchall()
     return class_data
-
 @app.route('/')
 def index():
     return template(getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
@@ -129,24 +129,23 @@ def tag_board():
 
 @app.route('/class_board/')
 def class_board():
-    class_num = request.args.get('class')
-    if class_num == None :
+    class_code = request.args.get('class')
+    if class_code == None :
         content = '''
         <form action="/class_board/">
         <ol>
-        <li><a href="?class=1">I1</a></li>
-        <li><a href="?class=2">I2</a></li>
-        <li><a href="?class=3">I3</a></li>
+        <li><a href="?class="DASF_I1"">DASF_I1</a></li>
+        <li><a href="?class='DASF_I2'">DASF_I2</a></li>
+        <li><a href="?class='DASF_I3'">DASF_I3</a></li>
         </ol>
         </form>
         '''
         return template(getContents(), content)
     else :
         content = f'''
-        <h1>class가 {class_num}인 경우 데이터임.</h1>
+        <h1>class가 {class_code}인 경우 데이터임.</h1>
         '''
-        return templates(getClassContents(class_num), content)
-
+        return templates(getClassContents(class_code), content)
 
 if __name__ == '__main__':
     app.run(debug=True)
