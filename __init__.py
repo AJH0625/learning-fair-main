@@ -20,7 +20,7 @@ def template(contents, content):
     return f'''<!doctype html>
     <html>
         <body>
-            <h1><a href="/">2022 Learning Fair 방문자</a></h1>
+            <h1><a href="/">2022 Learning Fair</a></h1>
             <ol>
                 {contents}
             </ol>
@@ -31,18 +31,58 @@ def template(contents, content):
         </body>
     </html>
     '''
- 
+
+def templates(contents, content):
+    return f'''<!doctype html>
+    <html>
+        <body>
+            <h1><a href="/">2022 Learning Fair</a></h1>
+            <ol>
+                {contents}
+            </ol>
+            {content}
+        </body>
+    </html>
+    '''
  
 def getContents():
     liTags = ''
     return liTags
- 
- 
+
+def getTagContents(tag):
+    TagContents = f"""
+                   SELECT *
+                   FROM project
+                   WHERE hashtag_main = {tag}
+                   ORDER BY RAND()
+                   """
+    with conn.cursor() as cur:
+            cur.execute(TagContents)
+            tag_data = cur.fetchall()
+    return tag_data
+
+def getClassContents(class_name):
+    ClassContents = f"""
+                   SELECT *
+                   FROM project
+                   WHERE class_name = {class_name}
+                   ORDER BY RAND()
+                   """
+    with conn.cursor() as cur:
+            cur.execute(ClassContents)
+            class_data = cur.fetchall()
+    return class_data
+
 @app.route('/')
 def index():
     return template(getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
  
- 
+
+@app.route('/tag_test/')
+def test():
+    tag = request.args.get('tag')
+    return tag
+
 @app.route('/create/', methods=['GET', 'POST'])
 def create():
     if request.method == 'GET': 
@@ -66,6 +106,47 @@ def create():
         conn.commit()
         url = '/'
         return redirect(url)
- 
+
+@app.route('/tag_board/')
+def tag_board():
+    tag = request.args.get('tag')
+    if tag == None :
+        content = '''
+        <form action="/tag_board/">
+        <ol>
+        <li><a href="?tag=1">운동</a></li>
+        <li><a href="?tag=2">애니메이션</a></li>
+        <li><a href="?tag=3">신입생</a></li>
+        </ol>
+        </form>
+        '''
+        return template(getContents(), content)
+    else :
+        content = f'''
+        <h1>tag가 {tag}인 경우 데이터임.</h1>
+        '''
+        return templates(getTagContents(tag), content)
+
+@app.route('/class_board/')
+def class_board():
+    class_num = request.args.get('class')
+    if class_num == None :
+        content = '''
+        <form action="/class_board/">
+        <ol>
+        <li><a href="?class=1">I1</a></li>
+        <li><a href="?class=2">I2</a></li>
+        <li><a href="?class=3">I3</a></li>
+        </ol>
+        </form>
+        '''
+        return template(getContents(), content)
+    else :
+        content = f'''
+        <h1>class가 {class_num}인 경우 데이터임.</h1>
+        '''
+        return templates(getClassContents(class_num), content)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
