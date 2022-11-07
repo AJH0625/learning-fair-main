@@ -138,10 +138,6 @@ def login():
         #return redirect(url_for('index'))
         return jsonify({"test":"hello"})
 
-@app.route('/testjson', methods=['POST'])
-def testjson():
-    return jsonify({"test":"hello"})
-
 @app.route('/tag')
 def tag():
     tag = request.args.get('tag')
