@@ -21,7 +21,7 @@ conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
 
-sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time) VALUES (%s, %s, %s, %s)"
+sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type) VALUES (%s, %s, %s, %s, %s)"
 like_button = 0
 
 def template(contents, content):
@@ -115,19 +115,30 @@ def login():
         '''
         return template(getContents(), content)
     elif request.method == 'POST':
-        Student_ID = request.form['Student_ID']
-        User_name = request.form['User_name']
-        User_major = request.form['User_major']
+        #Student_ID = request.form['Student_ID']
+        #User_name = request.form['User_name']
+        #User_major = request.form['User_major']
+        #User_login_time = datetime.datetime.now()
+        #session['User_name'] = request.form['User_name']
+        
+        user_json = request.get_json();
+        
+        Student_ID = user_json['studentId']
+        User_name = user_json['name']
+        User_major = user_json['major']
         User_login_time = datetime.datetime.now()
-        session['User_name'] = request.form['User_name']
-        
-        with conn.cursor() as cur:
-            cur.execute(sql, (User_name, Student_ID, User_major, User_login_time))
-        conn.commit()
-        return redirect(url_for('index'))
-        
+        User_type = user_json['userType']
 
-@app.route('/testjson')
+        session['User_name'] = user_json['name']
+
+
+        with conn.cursor() as cur:
+            cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
+        conn.commit()
+        #return redirect(url_for('index'))
+        return jsonify({"test":"hello"})
+
+@app.route('/testjson', methods=['POST'])
 def testjson():
     return jsonify({"test":"hello"})
 
