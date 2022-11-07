@@ -121,7 +121,7 @@ def login():
         #User_login_time = datetime.datetime.now()
         #session['User_name'] = request.form['User_name']
         
-        user_json = request.get_json();
+        user_json = request.get_json()
         
         Student_ID = user_json['studentId']
         User_name = user_json['name']
