@@ -1,0 +1,198 @@
+$primary: #e74c3c;
+
+
+.header {
+    width: auto;
+    backdrop-filter: blur(50px);
+    border: 1px solid rgba(0,0,0,0.1);
+    // box-shadow: 10px 20px 40px #00000033;
+    padding: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    flex:auto;
+    justify-content: center;
+    // backdrop-filter: blur(10px);
+    // background-color: rgba(255, 255, 255, 0.13); /* 밝게 보이도록 배경색 추가 */
+    // border-radius: 10px; 
+    margin: 10px 30px;
+    letter-spacing: 0.1em;
+
+} 
+
+
+.headerMenu{
+    display: flex;
+    flex:auto;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+
+.button {
+    --background: #2F3545;
+    --shadow: 0 2px 8px -1px #{rgba(#151924, .32)};
+    --shadow-hover: 0 4px 20px -2px #{rgba(#151924, .5)};
+    --text: #fff;
+    --font-size: 20px;
+    --duration: .44s;
+    --move-hover: -4px;
+    --font-shadow: var(--font-size);
+    // backdrop-filter: blur(10px);
+    // background-color: rgba(255, 255, 255, 0.13); /* 밝게 보이도록 배경색 추가 */
+    // border-radius: 10px; 
+    // box-shadow: 0 6px 20px -15px rgba(0, 0, 0, 0.062); /* 그림자 효과 */
+    // border-width: 1px 1px 0 0; /* 입체감 흰색 테두리 */
+    margin: 0px 10px;
+    padding:10px;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: var(--font-size);
+    // border-radius: 24px;
+    letter-spacing: 0.3em;
+
+    border:none;
+    // border-bottom: 0.5px solid var(--background);
+    background: transparent;
+    // display: block;
+    outline: none;
+    text-decoration: none;
+    font-size: var(--font-size);
+    
+
+    // background: var(--background);
+    color: var(--text);
+
+    // box-shadow: var(--shadow);
+    transform: translateY(var(--y)) translateZ(0);
+    transition: transform var(--duration) ease, box-shadow var(--duration) ease;
+    div {
+        display: flex;
+        overflow: hidden;
+        text-shadow: 0 var(--font-shadow) 0 var(--text);
+        span {
+            display: block;
+            backface-visibility: hidden;
+            font-size: var(--font-size);
+            transition: transform var(--duration) ease;
+            transform: translateY(var(--m)) translateZ(0);
+            
+            $i: 1;
+            @while $i < 12 {
+                &:nth-child(#{$i}) {
+                    transition-delay: $i / 20 + s;
+                }
+                $i: $i + 1;
+            }
+            
+        }
+    }
+    &:hover {
+        --y: var(--move-hover);
+        --shadow: var(--shadow-hover);
+
+        span {
+            --m: calc(var(--font-size) * -1);
+            color:#004b1a;
+
+        }
+    }
+    &.reverse {
+        --font-shadow: calc(var(--font-size) * -1);
+        &:hover {
+            span {
+                --m: calc(var(--font-size));
+                color:#4b0000b7;
+
+            }
+
+        }
+
+    }
+}
+.classMenu{
+    display: none;
+    visibility: hidden;
+    // margin-top: -20px;
+    position: absolute;
+    
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.412); /* 밝게 보이도록 배경색 추가 */
+    border-radius: 10px;
+    box-shadow: 0 6px 20px -15px #000; /* 그림자 효과 */
+    border-width: 1px 1px 0 0; /* 입체감 흰색 테두리 */
+    border-color: #fff;
+    border-style: solid;
+
+    margin:5px 0px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: calc(7%);
+      width: 0; 
+      height: 0; 
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid rgba(255, 255, 255, 0.537);
+    }
+   
+    
+    // p {
+    //   color: $primary;
+    //   display: block;
+    //   text-align: left;
+    //   padding: 0 18px;
+    //   margin: -4px 0;
+      
+    //   &:hover {
+    //     opacity: .8;
+    //   }
+      
+    //   &:nth-child(1) {
+    //     padding-top: 4px;
+    //   }
+      
+    //   &:nth-child(5) {
+    //     padding-bottom: 4px;
+    //   }
+    // }
+}
+#ClassBtn:hover +.classMenu{
+    visibility: visible;
+    display: block;
+    text-align: center; 
+    margin: 0 auto;
+    // border: 2px solid black;
+    
+
+}
+.leftMenu,.rightMenu{
+    margin:20px 0;
+    padding:0px 20px;
+    display: inline-block;
+    p{
+        color:black;
+        font-size: 20px;
+        margin:10px 0;
+    }
+}
+.leftMenu{
+    border-right: 2px dashed black ;
+}
+
+
+.headerWelcome {
+    margin:0;
+    padding-bottom: 15px;
+    display : flex;
+    align-items : center;
+    font-size: 18px;
+    color:rgba(255, 255, 255, 0.727);
+}
+
+#user{
+    font-weight: bold;
+    color: #fff;
+}

@@ -1,5 +1,5 @@
 function InputText({id, nameValue, onNameChange, studentIdValue, onStudentIdChange, majorValue, onMajorChange}) {
-    if(id=="inputStudent"){
+    if(id==="inputStudent"){
         return (
             <div id={id} className="inputTextShow">
                 <div className="input-box">

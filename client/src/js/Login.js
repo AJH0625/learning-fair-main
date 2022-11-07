@@ -1,7 +1,7 @@
 import '../css/Login.css';
 import Radio from "./login/Radio";
 import RadioGroup from './login/RadioGroup';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InputTextGroup from './login/InputTextGroup';
 import InputText from './login/InputText';
 import { useNavigate } from 'react-router-dom';
@@ -9,8 +9,6 @@ import axios from "axios";
 
 
 function Login() {
-  //const [sessionData, setSessionData] = useState(null)
-
   const navigate = useNavigate();
 
   const [radioValue,setRadioValue]=useState("재학생")
@@ -42,8 +40,8 @@ function Login() {
       setName("")
       return
     }
-    if (radioValue=='재학생'){
-      if (studentId.length!=10 || isNaN(studentId)){
+    if (radioValue==='재학생'){
+      if (studentId.length!==10 || isNaN(studentId)){
         console.log(studentId)
         alert('학번을 정확히 입력해주세요!')
         setStudentId("")
@@ -63,7 +61,7 @@ function Login() {
       userType:radioValue,
       name,
       studentId,
-      major
+      major:radioValue
     }
 
     axios.post('/login', JSON.stringify(submitValue), {
@@ -77,12 +75,10 @@ function Login() {
     })
     .catch(function (error) {
       console.log(error);
-      console.log("123");
     });
 
     console.log(submitValue)
   }
-
   return (
     <div className="Login">
       <center>
@@ -125,4 +121,3 @@ function Login() {
 }
 
 export default Login;
-
