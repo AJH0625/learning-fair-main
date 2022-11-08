@@ -116,7 +116,7 @@ def login():
         return template(getContents(), content)
     elif request.method == 'POST':
         
-        user_json = request.get_json();
+        user_json = request.get_json()
         
         Student_ID = user_json['studentId']
         User_name = user_json['name']
