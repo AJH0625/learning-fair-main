@@ -14,6 +14,7 @@ CORS(app)
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = 'secretkey'
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60)
+#test
 
 conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
