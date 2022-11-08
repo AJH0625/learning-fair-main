@@ -115,11 +115,6 @@ def login():
         '''
         return template(getContents(), content)
     elif request.method == 'POST':
-        #Student_ID = request.form['Student_ID']
-        #User_name = request.form['User_name']
-        #User_major = request.form['User_major']
-        #User_login_time = datetime.datetime.now()
-        #session['User_name'] = request.form['User_name']
         
         user_json = request.get_json();
         
