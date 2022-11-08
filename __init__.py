@@ -13,8 +13,6 @@ app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = 'secretkey'
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60)
-#test
 
 conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -92,6 +90,11 @@ def getClassContents(class_code):
         cur.execute(ClassContents)
         class_data = cur.fetchall()
     return class_data
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=60)
 
 @app.route('/')
 def index():
