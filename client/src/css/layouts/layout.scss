@@ -37,7 +37,7 @@ $target: #edfeedd3;
   
   .mask {
     position: absolute;
-    left: -5px;
+    left: -8px;
     top: 6px;
     width: 70px;
     font-family: Arial;
@@ -59,23 +59,23 @@ $target: #edfeedd3;
     padding: 5px;
     transform: translateX(0);
     box-sizing: border-box;
-    animation: mask 2.5s ease infinite alternate;
+    animation: mask 3s ease infinite alternate;
   }
   
   .titleText {
     transform: translateX(0);
-    animation: text 2.5s ease infinite alternate;
+    animation: text 3s ease infinite alternate;
   }
   
   @keyframes mask {
     to {
-      transform: translateX(170px);
+      transform: translateX(230px);
     }
   }
   
   @keyframes text {
     to {
-      transform: translateX(-170px);
+      transform: translateX(-230px);
     }
   }
   

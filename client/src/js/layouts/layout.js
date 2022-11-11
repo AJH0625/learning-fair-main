@@ -11,9 +11,9 @@ const Layout = (props) => {
     if (loc==='/main'){
       setTitle("")
     }else if (loc==="/tag"){
-      setTitle("해시태그 모아보기")
+      setTitle("해시태그")
     }else if (loc==="/awards"){
-      setTitle("시상식 페이지")
+      setTitle("Awards")
     }else if(loc.length>6 && loc.slice(0,6)==="/class"){
       setTitle(loc.slice(7))
     }else if(loc.length>8 && loc.slice(0,8)==="/project"){
