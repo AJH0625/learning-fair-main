@@ -1,15 +1,16 @@
 import React from "react"
 import "../../css/layouts/footer.css"
+// import Favicon from "./favicon"
 const Footer = () => {
   return (
     <footer>
       <div className="wrapper">
-        <div className="img">
-          <a href="."><img src="di.png" alt=""/></a>
-        </div>
+        {/* <div className="img">
+          <a href="https://www.skku.edu/skku/index.do"  target='_blank'><img id="footerLogoImg"src="skku.png" alt=""/></a>
+        </div> */}
         <div className="copyright">
-          <p>Copyright ⓒ 2022-2023 DIHYEOKGONG, Sungkyunkwan University</p>
-          <p>서울특별시 종로구 성균관로 25-2</p>
+          {/* <p><a href="https://github.com/2022-Learning-Fair" target='_blank'><Favicon/></a></p> */}
+          <p>Copyright ⓒ 2022 Learning Fair, Sungkyunkwan University</p>
         </div>
       </div>
     </footer>

@@ -18,7 +18,7 @@ function App() {
             <Route path="awards" element={<Awards />}></Route>
             <Route path="congrats" element={<Congrats />}></Route>
             <Route path="tag" element={<Tag />}></Route>
-            <Route path="class/:classId[0:10]" element={<Class />}></Route>
+            <Route path="class/:classId" element={<Class />}></Route>
             <Route path="project/:projectId" element={<Project />}></Route>
           </Route>
           {/* <Route path="*" element={<NotFound />} /> */}

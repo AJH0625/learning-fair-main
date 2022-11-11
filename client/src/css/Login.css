@@ -6,15 +6,21 @@
     position: relative;
     margin:100px 0;
 }
+
 body{
     background: linear-gradient(230.78deg,  hsla(147, 79%, 26%, 0.774) 10.64%,#23332d 90.6%);
 }
+
 center{
     margin:auto;
 }
 
+/* loginHeader */
 @import url("login/header.css");
 
+/* loginbody */
 @import url("login/body.css");
 
+/* loginButton */
 @import url("login/button.css");
+

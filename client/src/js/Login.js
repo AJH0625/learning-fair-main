@@ -7,7 +7,6 @@ import InputText from './login/InputText';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-
 function Login() {
   const navigate = useNavigate();
 
@@ -55,15 +54,16 @@ function Login() {
     }
     else{
       setStudentId(0)
-      setMajor(".")
+      setMajor(radioValue)
     }
     const submitValue={
       userType:radioValue,
       name,
       studentId,
-      major:radioValue
+      major
     }
 
+    
     axios.post('/login', JSON.stringify(submitValue), {
       headers: {
         "Content-Type": `application/json`,
@@ -77,6 +77,7 @@ function Login() {
       console.log(error);
     });
 
+    navigate("/main");
     console.log(submitValue)
   }
   return (
