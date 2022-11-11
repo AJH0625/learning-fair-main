@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import $ from 'jquery';
 import { useNavigate } from "react-router-dom";
 import "../../css/layouts/header.scss"
 import Button from './header/button';
@@ -13,7 +12,7 @@ const Header = () => {
     navigate(classURL)
   }
   var jbRandom = Math.random();
-  const [isActive, setActive] = useState("false");
+  const [isActive, setActive] = useState(false);
   const handleToggle = () => {
     setActive(!isActive);
   };
@@ -23,7 +22,7 @@ const Header = () => {
       <div className="headerMenu">
         <Button className='button' onClick={handleToggle} id='ClassBtn' value='분반'>
             <div className={`classMenu ${isActive ? "onclick" : ""}`}>
-                <MenuGroup className="leftMenu" > 
+                <MenuGroup className="leftMenu"> 
                     <Menu value="DASF002I1"/>
                     <Menu value="DASF002I2"/>
                     <Menu value="DASF002I3"/>

@@ -1,4 +1,4 @@
-import '../css/Main.css';
+
 function Main() {
     // function RequireAuth({ children, redirectTo }) {
     //     let isAuthenticated = getAuth();

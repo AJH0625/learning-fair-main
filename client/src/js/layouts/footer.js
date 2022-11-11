@@ -4,7 +4,7 @@ import "../../css/layouts/footer.css"
 const Footer = () => {
   return (
     <footer>
-      <div className="wrapper">
+      <div className="footerWrapper">
         {/* <div className="img">
           <a href="https://www.skku.edu/skku/index.do"  target='_blank'><img id="footerLogoImg"src="skku.png" alt=""/></a>
         </div> */}
