@@ -1,10 +1,18 @@
-.MainContent{
-  height: 65vh;
-}
+// .MainContent{
+//   height: 60vh;
+//   z-index: 1;
+// }
 
 .Awards{
     display: grid;
     grid-template-rows: 1fr;
+    
+    background-color: #edfeedd3;
+    min-height: 65vh;
+    max-height: auto;
+    margin: 10px 0px;
+    overflow:auto;
+    border-radius: 10px;
 }
 
 // $main: #f3576c;
@@ -19,7 +27,7 @@ $bottom:#00620a;
 
 h1 {
   font-size: 10vw;
-  top: 50%;
+  top: 55%;
   left: 50%;
   margin: 0;
   transform: translate(-50%, -50%);

@@ -48,13 +48,12 @@ const Layout = () => {
             "Content-Type": `application/json`,
           },
         })
-        
-        setTitle(response["data"]["team_name"])
+        const project=response.data
+        setTitle(`[${project.team_number}] ${project.team_name}  (${project.class_name})`)
     } catch(e) {
       console.log(e);
     }
   }
-
 
   const [title, setTitle] = useState(false);
   const loc = useLocation().pathname;
@@ -77,24 +76,6 @@ const Layout = () => {
     }
   }, [loc]);
   
-
-  /*
-  axios.post('/session-check', JSON.stringify(sessionCheckJson), {
-    headers: {
-      "Content-Type": `application/json`,
-    },
-  })
-  .then(function (response) {
-    if(response["data"]["session"] === "deactive") {
-      console.log("You need to login in!");
-      navigate("/");
-    }
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-  */
-
   return (
     <div>
       <Header />
