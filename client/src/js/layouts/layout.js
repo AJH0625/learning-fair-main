@@ -13,24 +13,6 @@ import Class from "../Class";
 import Project from "../Project";
 
 const Layout = () => {
-  const [title, setTitle] = useState(false);
-  const loc = useLocation().pathname;
-  useEffect(() => {
-    if (loc==='/main'){
-      setTitle("")
-    }else if (loc==="/tag"){
-      setTitle("해시태그")
-    }else if (loc==="/awards"){
-      setTitle("Awards")
-    }else if(loc.length>6 && loc.slice(0,6)==="/class"){
-      setTitle(loc.slice(7))
-    }else if(loc.length>8 && loc.slice(0,8)==="/project"){
-      setTitle("팀명")//바껴야 함 ~~
-    }else if(loc==="/congrats"){
-      setTitle("축사")
-    }
-}, [loc]);
-  
   //Session 기능 테스트 - 승열
   //Login.js 에서 axios통한 db등록 성공 시 사용자 name을 글로벌 스테이트로 설정 후 여기서 활용해야 할듯..
   const sessionCheckJson={
@@ -38,9 +20,9 @@ const Layout = () => {
   }
   const navigate = useNavigate();
 
-  async function session_check_api(){
+  async function session_check_api(sessionChkJson){
     try {
-        const response = await axios.post('/session-check', JSON.stringify(sessionCheckJson), {
+        const response = await axios.post('/session-check', JSON.stringify(sessionChkJson), {
           headers: {
             "Content-Type": `application/json`,
           },
@@ -55,7 +37,46 @@ const Layout = () => {
     }
   }
 
-  session_check_api();
+  session_check_api(sessionCheckJson);
+
+  //-----------세션 체크 완료------------------
+
+  async function project_layout_info_api(projectLayoutInfoReqJson){
+    try {
+        const response = await axios.post('/project-layout-info', JSON.stringify(projectLayoutInfoReqJson), {
+          headers: {
+            "Content-Type": `application/json`,
+          },
+        })
+        
+        setTitle(response["data"]["team_name"])
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+
+  const [title, setTitle] = useState(false);
+  const loc = useLocation().pathname;
+  useEffect(() => {
+    if (loc==='/main'){
+      setTitle("")
+    }else if (loc==="/tag"){
+      setTitle("해시태그")
+    }else if (loc==="/awards"){
+      setTitle("Awards")
+    }else if(loc.length>6 && loc.slice(0,6)==="/class"){
+      setTitle(loc.slice(7))
+    }else if(loc.length>8 && loc.slice(0,8)==="/project"){
+      const projectLayoutInfoReqestJson={
+        project_id:loc.slice(9)
+      }
+      project_layout_info_api(projectLayoutInfoReqestJson);
+    }else if(loc==="/congrats"){
+      setTitle("축사")
+    }
+  }, [loc]);
+  
 
   /*
   axios.post('/session-check', JSON.stringify(sessionCheckJson), {
