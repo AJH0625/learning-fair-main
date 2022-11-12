@@ -2,8 +2,44 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../css/Project.css';
+import axios from "axios";
+
 function Project() {
     const projectId = useParams().projectId;   
+
+    const projectInfoRequestJson={
+        project_id:projectId
+    }
+
+    async function project_info_api(projectInfoReqJson){
+        try {
+            const response = await axios.post('/project-info', JSON.stringify(projectInfoReqJson), {
+                headers: {
+                    "Content-Type": `application/json`,
+                },
+            })
+    
+            console.log(response);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    project_info_api(projectInfoRequestJson);
+
+    /*
+    axios.post('/project-info', JSON.stringify(projectInfoRequestJson), {
+        headers: {
+          "Content-Type": `application/json`,
+        },
+    })
+    .then(function (response) {
+        console.log(response)
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    */
 
     //변수명 db에 맞게 바꿔주시면 됩니다
     const [inputData, setInputData] = useState([{
