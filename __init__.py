@@ -84,9 +84,9 @@ def session_check():
 @app.route('/congrats-videos')
 def congrats_vidoes():
     congrats_vidoes_json = {
-        "president":"url1",
-        "sw_dean":"url2",
-        "ds_dean":"url3"
+        "president":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video1.mp4",
+        "sw_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video2.mp4",
+        "ds_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video3.mp4"
     }
 
     return jsonify(congrats_vidoes_json)
