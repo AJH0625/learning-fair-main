@@ -6,7 +6,7 @@ import os
 import pymysql
 from datetime import timedelta
 import datetime
-from .lfmodules import *
+import lfmodules
 
 load_dotenv()
 
@@ -74,12 +74,24 @@ def login():
 
 @app.route('/session-check', methods=['POST'])
 def session_check():
+    print(session)
+
     session_check_json = request.get_json()
 
     if session_check_json['name'] in session:
         return jsonify({"session":"active"})
     else:
         return jsonify({"session":"deactive"})
+
+@app.route('/congrats-videos')
+def congrats_vidoes():
+    congrats_vidoes_json = {
+        "president":"url1",
+        "sw_dean":"url2",
+        "ds_dean":"url3"
+    }
+
+    return jsonify(congrats_vidoes_json)
 
 
 @app.route('/tag')
