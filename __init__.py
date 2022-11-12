@@ -7,6 +7,7 @@ import pymysql
 from datetime import timedelta
 import datetime
 import lfmodules
+import secrets
 
 load_dotenv()
 
@@ -19,7 +20,6 @@ app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
 like_button = 0
-
 
 @app.route('/')
 def index():
@@ -55,6 +55,9 @@ def login():
         User_login_time = datetime.datetime.now()
         User_type = user_json['userType']
 
+        User_token = secrets.token_hex(nbytes=32)
+
+        #session[User_token] = user_json['name']
         session[user_json['name']] = user_json['userType']
 
         conn = pymysql.connect(host=os.environ.get('DB_URL'),
