@@ -6,6 +6,7 @@ import os
 import pymysql
 from datetime import timedelta
 import datetime
+import lfmodules
 
 load_dotenv()
 
@@ -21,76 +22,7 @@ conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
 
-sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type) VALUES (%s, %s, %s, %s, %s)"
 like_button = 0
-
-def template(contents, content):
-    return f'''<!doctype html>
-    <html>
-        <body>
-            <h1><a href="/">2022 Learning Fair</a></h1>
-            <ol>
-                {contents}
-            </ol>
-            {content}
-            <ul>
-                <li><a href="/login">입장하기</a></li>
-            </ul>
-        </body>
-    </html>
-    '''
-
-def templates(contents, content):
-    return f'''<!doctype html>
-    <html>
-        <body>
-            <h1><a href="/">2022 Learning Fair</a></h1>
-            <ol>
-                {contents}
-            </ol>
-            {content}
-        </body>
-    </html>
-    '''
- 
-def getContents():
-    liTags = ''
-    return liTags
-
-def getProjects(id):
-    Projects = f"""
-                SELECT *
-                FROM project
-                WHERE project_id = {id}
-                """
-    with conn.cursor() as cur:
-        cur.execute(Projects)
-        project_data = cur.fetchall()
-    return project_data
-
-def getTagContents(tag):
-    TagContents = f"""
-                   SELECT *
-                   FROM project
-                   WHERE hashtag_main = {tag}
-                   ORDER BY RAND()
-                   """
-    with conn.cursor() as cur:
-            cur.execute(TagContents)
-            tag_data = cur.fetchall()
-    return tag_data
-
-def getClassContents(class_code):
-    ClassContents = f"""
-                   SELECT *
-                   FROM project
-                   WHERE class_name = {class_code}
-                   ORDER BY RAND()
-                   """
-    with conn.cursor() as cur:
-        cur.execute(ClassContents)
-        class_data = cur.fetchall()
-    return class_data
 
 @app.route('/')
 def index():
@@ -100,10 +32,11 @@ def index():
         return '로그인 성공! 아이디는 %s' % escape(session['User_name']) + \
             "<br><a href = '/logout'>로그아웃</a>"
 
-    return template(getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
+    return lfmodules.template(lfmodules.getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type) VALUES (%s, %s, %s, %s, %s)"
     if request.method == 'GET': 
         content = '''
             <form action="/login" method="POST">
@@ -113,7 +46,7 @@ def login():
                 <p><input type="submit" value="로그인"></p>
             </form>
         '''
-        return template(getContents(), content)
+        return lfmodules.template(lfmodules.getContents(), content)
     elif request.method == 'POST':
         
         user_json = request.get_json()
@@ -146,12 +79,12 @@ def tag():
         </ol>
         </form>
         '''
-        return template(getContents(), content)
+        return lfmodules.template(lfmodules.getContents(), content)
     else :
         content = f'''
         <h1>tag가 {tag}인 경우 데이터임.</h1>
         '''
-        return templates(getTagContents(tag), content)
+        return lfmodules.templates(lfmodules.getTagContents(tag), content)
 
 @app.route('/class/')
 def class_():
@@ -166,19 +99,19 @@ def class_():
         </ol>
         </form>
         '''
-        return template(getContents(), content)
+        return lfmodules.template(lfmodules.getContents(), content)
     else :
         content = f'''
         <h1>class가 {class_code}인 경우 데이터임.</h1>
         '''
-        return templates(getClassContents(class_code), content)
+        return lfmodules.templates(lfmodules.getClassContents(class_code), content)
 
 @app.route('/project/<int:id>/')
 def project(id):
-    Project = getProjects(id)
+    Project =lfmodules.getProjects(id)
     title = Project[0][0]
     body = Project[0][10]
-    return template(getContents(), f'<h2>{title}</h2>{body}')
+    return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
 @app.route('/project/<int:pj_id>/like/')
 def like_project(pj_id):
