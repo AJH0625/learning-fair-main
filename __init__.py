@@ -15,6 +15,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
+app.config['SESSION_TYPE'] = 'filesystem'
 
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
