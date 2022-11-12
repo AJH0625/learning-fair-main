@@ -1,4 +1,4 @@
-import '../css/Congrats.css';
+import '../css/Congrats.scss';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 
@@ -23,8 +23,8 @@ function Congrats() {
                     <p>총장님</p>
                     <embed type="video/webm" src={URLs.sw_dean} width="500" height="250"/>
                 </div>
-                <div className="second">
-                    <p  id="sw">SW융합대학장님</p>
+                <div className="second" id="second">
+                    <p id="sw">SW융합대학장님</p>
                     <embed type="video/webm" src={URLs.president} width="450" height="250"/>
                 </div>
                 <div className="second">
