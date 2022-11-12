@@ -67,9 +67,7 @@ def login():
             cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
         conn.commit()
         
-        
-
-        return jsonify({"test":"hello"})
+        return jsonify({"login":"success"})
 
 
 @app.route('/session-check', methods=['POST'])
@@ -93,6 +91,35 @@ def congrats_vidoes():
 
     return jsonify(congrats_vidoes_json)
 
+@app.route('/project-info', methods=['POST'])
+def project_info():
+    sql = "SELECT * FROM project WHERE project_id = (%s)"
+
+    project_info_request_json = request.get_json()
+
+    with conn.cursor() as cur:
+        cur.execute(sql, (project_info_request_json["project_id"]))
+    project_info_db_result = cur.fetchall()
+
+    print(project_info_db_result)
+
+    project_info_json = {
+        "project_name":"",
+        "team_name":"",
+        "team_member":"",
+        "class_name":"",
+        "like_cnt":"",
+        "hashtag_main":"",
+        "hashtag_custom_a":"",
+        "hashtag_custom_b":"",
+        "hashtag_custom_c":"",
+        "project_youtube_url":"",
+        "project_pdf_url":"",
+        "project_id":"",
+        "team_number":""
+    }
+
+    return jsonify(project_info_json)
 
 @app.route('/tag')
 def tag():
