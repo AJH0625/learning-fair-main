@@ -1,5 +1,15 @@
 import '../css/Congrats.css';
+import axios from "axios";
+
 function Congrats() {
+    axios.get('/congrats-videos')
+    .then(function (response) {
+        console.log(response)
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
     return (
         <div className="Congrats">
             <div class="CongratsWrapper">
