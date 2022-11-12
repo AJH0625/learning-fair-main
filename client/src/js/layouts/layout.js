@@ -44,7 +44,7 @@ const Layout = () => {
     },
   })
   .then(function (response) {
-    if(response["data"]["session"] == "deactive") {
+    if(response["data"]["session"] === "deactive") {
       console.log("You need to login in!");
       navigate("/");
     }

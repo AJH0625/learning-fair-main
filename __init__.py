@@ -6,7 +6,7 @@ import os
 import pymysql
 from datetime import timedelta
 import datetime
-import lfmodules
+from .lfmodules import *
 
 load_dotenv()
 
