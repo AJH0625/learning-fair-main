@@ -122,12 +122,35 @@ def project_info():
         "hashtag_custom_c":project_info_db_result[0][8],
         "project_youtube_url":project_info_db_result[0][9],
         #"project_pdf_url":project_info_db_result[0][10],
-        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/OS+Term+Project1_r2.pdf",
+        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/%ED%94%BC%EC%A7%80%EC%BB%AC+%EC%BB%B4%ED%93%A8%ED%8C%85+%EC%A4%91%EA%B0%84+%EB%B0%9C%ED%91%9C.pdf",
         "project_id":project_info_db_result[0][11],
         "team_number":project_info_db_result[0][12]
     }
 
     return jsonify(project_info_json)
+
+@app.route('/project-layout-info', methods=['POST'])
+def project_layout_info():
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
+
+    project_layout_info_request_json = request.get_json()
+    sql = f"""SELECT team_name, class_name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
+
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    project_layout_info_db_result = cur.fetchall()
+
+    project_layout_info_json = {
+        "team_name":project_layout_info_db_result[0][0],
+        "class_name":project_layout_info_db_result[0][1],
+        "team_number":project_layout_info_db_result[0][2]
+    }
+
+    return jsonify(project_layout_info_json)
 
 @app.route('/tag')
 def tag():
