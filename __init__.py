@@ -15,7 +15,6 @@ app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
-app.config['SESSION_TYPE'] = 'filesystem'
 
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
@@ -123,7 +122,7 @@ def project_info():
         "hashtag_custom_c":project_info_db_result[0][8],
         "project_youtube_url":project_info_db_result[0][9],
         #"project_pdf_url":project_info_db_result[0][10],
-        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/%ED%94%BC%EC%A7%80%EC%BB%AC+%EC%BB%B4%ED%93%A8%ED%8C%85+%EC%A4%91%EA%B0%84+%EB%B0%9C%ED%91%9C.pdf",
+        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/OS+Term+Project1_r2.pdf",
         "project_id":project_info_db_result[0][11],
         "team_number":project_info_db_result[0][12]
     }
@@ -202,7 +201,6 @@ def project(id):
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-
 @app.route('/project/<int:pj_id>/like/')
 def like_project(pj_id):
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
@@ -229,7 +227,7 @@ def like_project(pj_id):
             like_data = cur.fetchall()
         print(like_data[0][0])    
         like_button = 1
-        return jsonify({'msg': '좋아요 완료!'})
+        return jsonify({"like_cnt": like_data[0][0]})
     
     else :
         likeup= f"""
@@ -248,7 +246,7 @@ def like_project(pj_id):
             like_data = cur.fetchall()
         print(like_data[0][0])    
         like_button = 0
-        return jsonify({'msg': '좋아요 취소!'})
+        return jsonify({"like_cnt": like_data[0][0]})
     
 
 @app.route('/logout')

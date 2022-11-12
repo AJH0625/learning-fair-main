@@ -37,7 +37,7 @@ const Layout = () => {
     }
   }
 
-  session_check_api(sessionCheckJson);
+  // session_check_api(sessionCheckJson);
 
   //-----------세션 체크 완료------------------
 

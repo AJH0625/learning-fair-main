@@ -1,0 +1,44 @@
+.Project{
+ 
+    background-color: #edfeedd3;
+    min-height: 120vh;
+    max-height: auto;
+    /* margin: 10px 0px; */
+    /* overflow:auto; */
+    border-radius: 10px;
+}
+.ProjectContentWrapper{
+    display: grid;
+    grid-template-areas: 
+    'youtube'
+    'pdf';
+    grid-template-rows: 450px 450px;
+    justify-content: center;
+}
+
+#ProjectYoutube{
+    grid-area: youtube;
+}
+#ProjectPDF{
+    grid-area: pdf;
+}
+
+.ProjectContent {
+    border: solid red 1px;
+    padding: 30px;
+}
+
+.ProjectContent p{
+    padding-bottom: 10px;
+    font-size: 30px;
+    color: #00620a;
+    font-weight: 900;
+}
+.ProjectYoutube{
+    width: 100%;
+}
+
+.ProjectPDF{
+    width: 100%;
+    height: 90%;
+}
