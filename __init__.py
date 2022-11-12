@@ -18,12 +18,6 @@ app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 #테스트를 위한 값임.. 배포 시에는 minutes=10이 적당해보임
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
-conn = pymysql.connect(host=os.environ.get('DB_URL'),
-                       user=os.environ.get('DB_USER'),
-                       password=os.environ.get('DB_PASSWORD'),
-                       db=os.environ.get('DB_NAME'),
-                       charset='utf8')
-
 like_button = 0
 
 
@@ -63,6 +57,12 @@ def login():
 
         session[user_json['name']] = user_json['userType']
 
+        conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
+
         with conn.cursor() as cur:
             cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
         conn.commit()
@@ -83,6 +83,7 @@ def session_check():
 
 @app.route('/congrats-videos')
 def congrats_vidoes():
+    #영상 업데이트 되면 url 바꿔야 함
     congrats_vidoes_json = {
         "president":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video1.mp4",
         "sw_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video2.mp4",
@@ -93,30 +94,33 @@ def congrats_vidoes():
 
 @app.route('/project-info', methods=['POST'])
 def project_info():
-    sql = "SELECT * FROM project WHERE project_id = (%s)"
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
 
     project_info_request_json = request.get_json()
+    sql = f"""SELECT * FROM project WHERE project_id = {project_info_request_json["project_id"]}"""
 
     with conn.cursor() as cur:
-        cur.execute(sql, (project_info_request_json["project_id"]))
+        cur.execute(sql)
     project_info_db_result = cur.fetchall()
 
-    print(project_info_db_result)
-
     project_info_json = {
-        "project_name":"",
-        "team_name":"",
-        "team_member":"",
-        "class_name":"",
-        "like_cnt":"",
-        "hashtag_main":"",
-        "hashtag_custom_a":"",
-        "hashtag_custom_b":"",
-        "hashtag_custom_c":"",
-        "project_youtube_url":"",
-        "project_pdf_url":"",
-        "project_id":"",
-        "team_number":""
+        "project_name":project_info_db_result[0][0],
+        "team_name":project_info_db_result[0][1],
+        "team_member":project_info_db_result[0][2],
+        "class_name":project_info_db_result[0][3],
+        "like_cnt":project_info_db_result[0][4],
+        "hashtag_main":project_info_db_result[0][5],
+        "hashtag_custom_a":project_info_db_result[0][6],
+        "hashtag_custom_b":project_info_db_result[0][7],
+        "hashtag_custom_c":project_info_db_result[0][8],
+        "project_youtube_url":project_info_db_result[0][9],
+        "project_pdf_url":project_info_db_result[0][10],
+        "project_id":project_info_db_result[0][11],
+        "team_number":project_info_db_result[0][12]
     }
 
     return jsonify(project_info_json)
