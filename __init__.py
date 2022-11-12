@@ -16,7 +16,7 @@ CORS(app)
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 
-#테스트를 위한 값임.. 배포 시에는 minutes=10이 적당해보임
+#테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
 like_button = 0
@@ -70,7 +70,7 @@ def login():
             cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
         conn.commit()
         
-        return jsonify({"login":"success"})
+        return jsonify({"login":"success","token":User_token})
 
 
 @app.route('/session-check', methods=['POST'])
@@ -121,7 +121,8 @@ def project_info():
         "hashtag_custom_b":project_info_db_result[0][7],
         "hashtag_custom_c":project_info_db_result[0][8],
         "project_youtube_url":project_info_db_result[0][9],
-        "project_pdf_url":project_info_db_result[0][10],
+        #"project_pdf_url":project_info_db_result[0][10],
+        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/OS+Term+Project1_r2.pdf",
         "project_id":project_info_db_result[0][11],
         "team_number":project_info_db_result[0][12]
     }
@@ -180,6 +181,12 @@ def project(id):
 
 @app.route('/project/<int:pj_id>/like/')
 def like_project(pj_id):
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
+
     global like_button
     if like_button == 0:
         likeup= f"""
