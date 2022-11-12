@@ -62,8 +62,25 @@ function Login() {
       studentId,
       major
     }
-
     
+    async function login_api(){
+      try {
+          const response = await axios.post('/login', JSON.stringify(submitValue), {
+            headers: {
+              "Content-Type": `application/json`,
+            },
+          })
+
+          console.log(response);
+          navigate("/main");
+      } catch(e) {
+        console.log(e);
+      }
+    }
+
+    login_api();
+
+    /*
     axios.post('/login', JSON.stringify(submitValue), {
       headers: {
         "Content-Type": `application/json`,
@@ -76,10 +93,13 @@ function Login() {
     .catch(function (error) {
       console.log(error);
     });
+    */
 
-    navigate("/main");
-    console.log(submitValue)
+
+    //navigate("/main");
+    //console.log(submitValue)
   }
+
   return (
     <div className="Login">
       <center>
