@@ -13,8 +13,10 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
-app.secret_key = 'secretkey'
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60)
+app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
+
+#테스트를 위한 값임.. 배포 시에는 minutes=10이 적당해보임
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
 conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -23,6 +25,7 @@ conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        charset='utf8')
 
 like_button = 0
+
 
 @app.route('/')
 def index():
@@ -33,6 +36,7 @@ def index():
             "<br><a href = '/logout'>로그아웃</a>"
 
     return lfmodules.template(lfmodules.getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,14 +61,26 @@ def login():
         User_login_time = datetime.datetime.now()
         User_type = user_json['userType']
 
-        session['User_name'] = user_json['name']
-
+        session[user_json['name']] = user_json['userType']
 
         with conn.cursor() as cur:
             cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
         conn.commit()
-        #return redirect(url_for('index'))
+        
+        
+
         return jsonify({"test":"hello"})
+
+
+@app.route('/session-check', methods=['POST'])
+def session_check():
+    session_check_json = request.get_json()
+
+    if session_check_json['name'] in session:
+        return jsonify({"session":"active"})
+    else:
+        return jsonify({"session":"deactive"})
+
 
 @app.route('/tag')
 def tag():
@@ -86,6 +102,7 @@ def tag():
         '''
         return lfmodules.templates(lfmodules.getTagContents(tag), content)
 
+
 @app.route('/class/')
 def class_():
     class_code = request.args.get('class')
@@ -106,12 +123,14 @@ def class_():
         '''
         return lfmodules.templates(lfmodules.getClassContents(class_code), content)
 
+
 @app.route('/project/<int:id>/')
 def project(id):
     Project =lfmodules.getProjects(id)
     title = Project[0][0]
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
+
 
 @app.route('/project/<int:pj_id>/like/')
 def like_project(pj_id):
@@ -154,10 +173,12 @@ def like_project(pj_id):
         like_button = 0
         return jsonify({'msg': '좋아요 취소!'})
     
+
 @app.route('/logout')
 def logout():
     session.pop('User_name', None)
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
