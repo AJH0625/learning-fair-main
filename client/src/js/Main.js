@@ -5,11 +5,11 @@ function Main() {
     //     return isAuthenticated ? children : <Navigate to={redirectTo} />;
     // }
     // RequireAuth('/login')
-    return (
-        <div className="Main">
+    // return (
+    //     <div className="Main">
         
-        </div>
-    );
+    //     </div>
+    // );
 }
 
 export default Main;
