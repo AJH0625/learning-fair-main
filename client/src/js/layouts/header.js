@@ -18,7 +18,7 @@ const Header = () => {
   };
   return (
     <header className="header">
-      <img src="skkuLearningFair.png" onClick={()=>handleOnClick('/main')} alt="" className="headerLogo"/>
+      <img src={`${process.env.PUBLIC_URL}/skkuLearningFair.png`} onClick={()=>handleOnClick('/main')} alt="" className="headerLogo"/>
       <div className="headerMenu">
         <Button className='button' onClick={handleToggle} id='ClassBtn' value='분반'>
             <div className={`classMenu ${isActive ? "onclick" : ""}`}>

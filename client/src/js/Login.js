@@ -114,7 +114,7 @@ function Login() {
               <p>sungkyunkwan university</p>
               <p>11.23-12.04</p>
             </div>
-            <img src="skku.png" className="logoImg" alt="skku.png"/>
+            <img src={`${process.env.PUBLIC_URL}/skku.png`} className="logoImg" alt="skku.png"/>
           </div>
           <div className="loginBody-middle">
             <form>
