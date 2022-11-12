@@ -1,10 +1,16 @@
 import Footer from "./footer"
 import Header from "./header"
 import "../../css/layouts/layout.scss"
-import { useLocation } from "react-router";
+import { Route, Routes, useLocation } from "react-router";
 import { useEffect, useState } from "react";
+import Main from "../Main";
+import Awards from "../Awards";
+import Congrats from "../Congrats";
+import Tag from "../Tag";
+import Class from "../Class";
+import Project from "../Project";
 
-const Layout = (props) => {
+const Layout = () => {
   const [title, setTitle] = useState(false);
   const loc = useLocation().pathname;
   useEffect(() => {
@@ -21,20 +27,28 @@ const Layout = (props) => {
     }else if(loc==="/congrats"){
       setTitle("축사")
     }
-}, [loc]);
-  
+  }, [loc]);
   return (
     <div>
       <Header />
-        <div className={`titleWrapper ${title ? "": "hidden" }`}>
+      <div className="Main">
+        <div className={`MainTitle ${title ? "": "hidden" }`}>
           <div className="focus">{title}</div>
           <div className="mask">
             <div className="titleText">{title}</div>
           </div>
         </div>
-        <div className="Main">
-          {props.children}
+        <div className="MainContent">
+          <Routes>
+            <Route path="/main" element={<Main/>}/>
+            <Route path="/awards" element={<Awards />}/>
+            <Route path="/congrats" element={<Congrats />}/>
+            <Route path="/tag" element={<Tag />}/>
+            <Route path="/class/:classId" element={<Class />}/>
+            <Route path="/project/:projectId" element={<Project />}/>
+          </Routes>
         </div>
+      </div>
       <Footer />
     </div>
   )
