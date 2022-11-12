@@ -12,7 +12,7 @@ function Congrats() {
 
     return (
         <div className="Congrats">
-            <div class="CongratsWrapper">
+            <div className="CongratsWrapper">
                 <div className="first">
                     <p>총장님</p>
                 </div>
