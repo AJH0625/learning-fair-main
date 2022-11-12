@@ -33,6 +33,21 @@ function Login() {
     setMajor("")
   }
 
+  async function login_api(submitValue){
+    try {
+        const response = await axios.post('/login', JSON.stringify(submitValue), {
+          headers: {
+            "Content-Type": `application/json`,
+          },
+        })
+
+        console.log(response);
+        navigate("/main");
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   function handleLoginBtn(){
     if (name.length<2){
       alert('이름을 정확히 입력해주세요!')
@@ -62,23 +77,8 @@ function Login() {
       studentId,
       major
     }
-    
-    async function login_api(){
-      try {
-          const response = await axios.post('/login', JSON.stringify(submitValue), {
-            headers: {
-              "Content-Type": `application/json`,
-            },
-          })
 
-          console.log(response);
-          navigate("/main");
-      } catch(e) {
-        console.log(e);
-      }
-    }
-
-    login_api();
+    login_api(submitValue);
 
     /*
     axios.post('/login', JSON.stringify(submitValue), {
