@@ -3,6 +3,8 @@ import Header from "./header"
 import "../../css/layouts/layout.scss"
 import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const Layout = (props) => {
   const [title, setTitle] = useState(false);
@@ -23,6 +25,28 @@ const Layout = (props) => {
     }
 }, [loc]);
   
+  //Session 기능 테스트 - 승열
+  //Login.js 에서 axios통한 db등록 성공 시 사용자 name을 글로벌 스테이트로 설정 후 여기서 활용해야 할듯..
+  const sessionCheckJson={
+    name:"손승열"
+  }
+  const navigate = useNavigate();
+
+  axios.post('/session-check', JSON.stringify(sessionCheckJson), {
+    headers: {
+      "Content-Type": `application/json`,
+    },
+  })
+  .then(function (response) {
+    if(response["data"]["session"] == "deactive") {
+      console.log("You need to login in!");
+      navigate("/");
+    }
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
   return (
     <div>
       <Header />
