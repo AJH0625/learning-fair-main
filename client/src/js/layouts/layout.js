@@ -38,6 +38,26 @@ const Layout = () => {
   }
   const navigate = useNavigate();
 
+  async function session_check_api(){
+    try {
+        const response = await axios.post('/session-check', JSON.stringify(sessionCheckJson), {
+          headers: {
+            "Content-Type": `application/json`,
+          },
+        })
+
+        if(response["data"]["session"] === "deactive") {
+          console.log("You need to login in!");
+          navigate("/");
+        }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  session_check_api();
+
+  /*
   axios.post('/session-check', JSON.stringify(sessionCheckJson), {
     headers: {
       "Content-Type": `application/json`,
@@ -52,6 +72,7 @@ const Layout = () => {
   .catch(function (error) {
     console.log(error);
   });
+  */
 
   return (
     <div>
