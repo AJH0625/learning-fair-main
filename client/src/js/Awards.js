@@ -1,9 +1,10 @@
-import '../css/Awards.css';
+import '../css/Awards.scss';
 function Awards() {
     return (
         <div className="Awards">
-            <p>12.7</p>
-            <p>Coming Soon</p>
+            <div className='AwardsWrapper'>
+                <h1 data-heading="12.2 Coming Soon"><span>12.2</span><br/>Coming Soon</h1>
+            </div>
         </div>
     );
 }
