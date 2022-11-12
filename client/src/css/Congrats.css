@@ -1,7 +1,3 @@
-.MainContent{
-    height:auto;
-}
-
 .Congrats {
     display: grid;
     grid-template-rows: 1fr;
