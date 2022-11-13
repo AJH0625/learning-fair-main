@@ -12,16 +12,30 @@
 
 .Grid{
     padding:10px;
+    word-break: keep-all;
+    word-wrap: break-word;
     width: 280px;
     background-color: beige;
     height: 300px;
     border-radius: 0.5rem;
     box-shadow: 3px 3px 5px rgba(131, 130, 130, 0.49);
     letter-spacing: 2px;
+    p {
+        margin:10px 0;
+    }
+}
+.GridProjectName{
+    font-size: 20px;
+}
+.GridTeam{
+    color:rgb(123, 123, 123);
+    font-size: 17px;
+}
+.GridTeamMember{
 
 }
-
 .GridHashtag{
     color:rgb(123, 123, 123);
-    font-size: 13px;
+    font-size: 15px;
+    font-style: italic;
 }
