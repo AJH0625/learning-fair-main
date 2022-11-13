@@ -173,7 +173,7 @@ def tag():
         return lfmodules.templates(lfmodules.getTagContents(tag), content)
 
 
-@app.route('/class/')
+@app.route('/class')
 def class_():
     class_code = request.args.get('class')
     if class_code == None :
@@ -194,14 +194,14 @@ def class_():
         return lfmodules.templates(lfmodules.getClassContents(class_code), content)
 
 
-@app.route('/project/<int:id>/')
+@app.route('/project/<int:id>')
 def project(id):
     Project =lfmodules.getProjects(id)
     title = Project[0][0]
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-@app.route('/project/<int:pj_id>/like/')
+@app.route('/project/<int:pj_id>/like')
 def like_project(pj_id):
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
