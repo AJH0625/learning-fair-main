@@ -171,8 +171,8 @@ def project_layout_info():
 
 
 
-@app.route('/class-project-list')
-def class_project_list():
+@app.route('/class')
+def class_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
@@ -205,8 +205,8 @@ def class_project_list():
 
     return jsonify(class_project_list_json)
 
-@app.route('/tag-project-list')
-def tag_project_list():
+@app.route('/tag')
+def tag_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
