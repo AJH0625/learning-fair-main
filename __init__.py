@@ -181,7 +181,7 @@ def class_project_list():
 
     class_name = request.args.get('class')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE class_name = '{class_name}'"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,like_cnt FROM project WHERE class_name = '{class_name}'"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
@@ -199,6 +199,7 @@ def class_project_list():
             "hashtag_custom_a":class_project[4], 
             "hashtag_custom_b":class_project[5], 
             "hashtag_custom_c":class_project[6],
+            "like_cnt":class_project[7],
         }
 
         class_project_list_json["projects"].append(project_container)
