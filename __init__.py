@@ -21,6 +21,8 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
 like_button = 0
 
+
+
 @app.route('/')
 def index():
     if 'User_name' in session:
@@ -30,6 +32,7 @@ def index():
             "<br><a href = '/logout'>로그아웃</a>"
 
     return lfmodules.template(lfmodules.getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -73,6 +76,7 @@ def login():
         return jsonify({"login":"success","token":User_token})
 
 
+
 @app.route('/session-check', methods=['POST'])
 def session_check():
     print(session)
@@ -84,6 +88,8 @@ def session_check():
     else:
         return jsonify({"session":"deactive"})
 
+
+
 @app.route('/congrats-videos')
 def congrats_vidoes():
     #영상 업데이트 되면 url 바꿔야 함
@@ -94,6 +100,8 @@ def congrats_vidoes():
     }
 
     return jsonify(congrats_vidoes_json)
+
+
 
 @app.route('/project-info', methods=['POST'])
 def project_info():
@@ -122,12 +130,14 @@ def project_info():
         "hashtag_custom_c":project_info_db_result[0][8],
         "project_youtube_url":project_info_db_result[0][9],
         #"project_pdf_url":project_info_db_result[0][10],
-        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/OS+Term+Project1_r2.pdf",
+        "project_pdf_url":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/test/%ED%94%BC%EC%A7%80%EC%BB%AC+%EC%BB%B4%ED%93%A8%ED%8C%85+%EC%A4%91%EA%B0%84+%EB%B0%9C%ED%91%9C.pdf",
         "project_id":project_info_db_result[0][11],
         "team_number":project_info_db_result[0][12]
     }
 
     return jsonify(project_info_json)
+
+
 
 @app.route('/project-layout-info', methods=['POST'])
 def project_layout_info():
@@ -138,7 +148,7 @@ def project_layout_info():
                        charset='utf8')
 
     project_layout_info_request_json = request.get_json()
-    sql = f"""SELECT team_name, class_name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
+    sql = f"""SELECT team_name, project name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
@@ -151,6 +161,44 @@ def project_layout_info():
     }
 
     return jsonify(project_layout_info_json)
+
+
+
+@app.route('/class-project-list')
+def class_project_list():
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
+
+    class_name = request.args.get('class')
+
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE class_name = '{class_name}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    class_project_list_db_result = cur.fetchall()
+
+    print(class_project_list_db_result)
+
+    class_project_list_json = {"projects":[]}
+    for class_project in class_project_list_db_result:
+        project_container = {
+            "team_name":class_project[0], 
+            "team_member":class_project[1], 
+            "team_number":class_project[2], 
+            "hashtag_main":class_project[3], 
+            "hashtag_custom_a":class_project[4], 
+            "hashtag_custom_b":class_project[5], 
+            "hashtag_custom_c":class_project[6],
+        }
+
+        class_project_list_json["projects"].append(project_container)
+
+    return jsonify(class_project_list_json)
+
+
 
 @app.route('/tag')
 def tag():
@@ -251,6 +299,7 @@ def like_project(pj_id):
         like_button = 0
         return jsonify({"like_cnt": like_data[0][0]})
     
+
 
 @app.route('/logout')
 def logout():

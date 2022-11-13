@@ -8,7 +8,11 @@ function Class() {
     const classId = useParams().classId;
     
     useEffect(() => {
-        axios.get('/class',{class:classId})
+        axios.get('/class-project-list',{
+            params: {
+                class:classId
+            }
+        })
         .then(function (response) {
             console.log(response)
         })
