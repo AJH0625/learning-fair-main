@@ -256,26 +256,25 @@ def project(id):
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-@app.route('/project/<int:pj_id>/like')
-def like_project(pj_id):
+@app.route('/project/<int:project_id>/like')
+def like_project(project_id):
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    
 
     global like_button
     if like_button == 0:
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt + 1
-                where project_id = {pj_id}
+                where project_id = {project_id}
                 """
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
-                   where project_id = {pj_id}
+                   where project_id = {project_id}
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
@@ -290,12 +289,12 @@ def like_project(pj_id):
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt - 1
-                where project_id = {pj_id}
+                where project_id = {project_id}
                 """
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
-                   where project_id = {pj_id}
+                   where project_id = {project_id}
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
