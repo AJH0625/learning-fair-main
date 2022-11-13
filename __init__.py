@@ -208,6 +208,7 @@ def like_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
+    
 
     global like_button
     if like_button == 0:
@@ -225,6 +226,7 @@ def like_project(pj_id):
             cur.execute(likeup)
             cur.execute(likecnts)
             like_data = cur.fetchall()
+            conn.commit()
         print(like_data[0][0])    
         like_button = 1
         return jsonify({"like_cnt": like_data[0][0]})
@@ -244,6 +246,7 @@ def like_project(pj_id):
             cur.execute(likeup)
             cur.execute(likecnts)
             like_data = cur.fetchall()
+            conn.commit()
         print(like_data[0][0])    
         like_button = 0
         return jsonify({"like_cnt": like_data[0][0]})
