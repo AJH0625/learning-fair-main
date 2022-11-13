@@ -206,7 +206,7 @@ def class_project_list():
     return jsonify(class_project_list_json)
 
 @app.route('/tag-project-list')
-def class_project_list():
+def tag_project_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
