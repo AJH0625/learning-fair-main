@@ -181,7 +181,7 @@ def class_project_list():
 
     class_name = request.args.get('class')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,like_cnt,project_name FROM project WHERE class_name = '{class_name}'"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE class_name = '{class_name}'"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
@@ -199,15 +199,45 @@ def class_project_list():
             "hashtag_custom_a":class_project[4], 
             "hashtag_custom_b":class_project[5], 
             "hashtag_custom_c":class_project[6],
-            "like_cnt":class_project[7],
-            "project_name":class_project[8]
         }
 
         class_project_list_json["projects"].append(project_container)
 
     return jsonify(class_project_list_json)
 
+@app.route('/tag-project-list')
+def class_project_list():
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
 
+    tag_code = request.args.get('tag')
+
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    tag_project_list_db_result = cur.fetchall()
+
+    print(tag_project_list_db_result)
+
+    tag_project_list_json = {"projects":[]}
+    for tag_project in tag_project_list_db_result:
+        project_container = {
+            "team_name":tag_project[0], 
+            "team_member":tag_project[1], 
+            "team_number":tag_project[2], 
+            "hashtag_main":tag_project[3], 
+            "hashtag_custom_a":tag_project[4], 
+            "hashtag_custom_b":tag_project[5], 
+            "hashtag_custom_c":tag_project[6],
+        }
+
+        tag_project_list_json["projects"].append(project_container)
+
+    return jsonify(tag_project_list_json)
 
 @app.route('/tag')
 def tag():
@@ -228,6 +258,7 @@ def tag():
         <h1>tag가 {tag}인 경우 데이터임.</h1>
         '''
         return lfmodules.templates(lfmodules.getTagContents(tag), content)
+
 
 
 @app.route('/class')
@@ -258,25 +289,26 @@ def project(id):
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-@app.route('/project/<int:project_id>/like')
-def like_project(project_id):
+@app.route('/project/<int:pj_id>/like')
+def like_project(pj_id):
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
+    
 
     global like_button
     if like_button == 0:
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt + 1
-                where project_id = {project_id}
+                where project_id = {pj_id}
                 """
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
-                   where project_id = {project_id}
+                   where project_id = {pj_id}
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
@@ -291,12 +323,12 @@ def like_project(project_id):
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt - 1
-                where project_id = {project_id}
+                where project_id = {pj_id}
                 """
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
-                   where project_id = {project_id}
+                   where project_id = {pj_id}
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
