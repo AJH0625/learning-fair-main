@@ -76,15 +76,15 @@ function Project() {
         <div className="Project">
             <div className='ProjectInfo'>
                 <h2>{project.current.project_name}</h2>
-                <p id="member">{project.current.team_member}</p>
+                <p id="ProjectMember">{project.current.team_member}</p>
                 <div class="ProjectInfoWrapper">
-                    <button id="like" onClick={handleOnclick} className={`${click.current?"":"NoneClick"}`}>
+                    <button id="ProjectLike" onClick={handleOnclick} className={`${click.current?"":"NoneClick"}`}>
                         <div>
                             <span class="material-symbols-outlined">favorite</span>
                             {like_show}
                         </div>
                     </button>
-                    <p id="hashtag">
+                    <p id="ProjectHashtag">
                         <span>#{project.current.hashtag_main}</span>
                         <span>#{project.current.hashtag_custom_a}</span>
                         <span>#{project.current.hashtag_custom_b}</span>
