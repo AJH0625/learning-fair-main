@@ -1,0 +1,12 @@
+.Project{
+    background-color: #edfeedd3;
+    height: 1100px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center
+}
+
+@import url("project/projectInfo.scss");
+@import url("project/ProjectContent.scss");

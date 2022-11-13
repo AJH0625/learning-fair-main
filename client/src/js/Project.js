@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import '../css/Project.css';
+import { useLocation, useParams } from 'react-router-dom';
+import '../css/Project.scss';
 import axios from "axios";
 import YouTube from 'react-youtube';
+import { useRef } from 'react';
 
 function Project() {
     
-    const [project, setProject] = useState({
-            class_name:"",team_number:"",team_name:"",team_member:""
-            ,project_name:"",project_pdf_url:"",project_youtube_url:""
-            ,hashtag_main:"",hashtag_custom_a:"",hashtag_custom_b:"",hashtag_custom_c:""
-            ,like_cnt:""
-        });
-    const [like, setLike] = useState(0);
-    const [click, setClick] = useState(false);
+    const project=useRef("")
+    // const like=useRef(0)
+    const [like_show, setLike] = useState(0);
+    const click=useRef(false)
+
     async function project_info_api(projectInfoReqJson){
         try {
             const response = await axios.post('/project-info', 
@@ -23,21 +21,26 @@ function Project() {
                     },
                 })
             const data=response.data
-            setProject({
+            project.current={
                 class_name:data.class_name,
                 team_number:data.team_number,
                 team_name:data.team_name,
-                team_member:data.team_member,
+
                 project_name:data.project_name,
+                team_member:data.team_member,
+                
                 project_pdf_url:data.project_pdf_url,
                 project_youtube_url:(data.project_youtube_url).slice(-11),
+                
                 hashtag_main:data.hashtag_main,
                 hashtag_custom_a:data.hashtag_custom_a,
                 hashtag_custom_b:data.hashtag_custom_b,
                 hashtag_custom_c:data.hashtag_custom_c,
+                
                 like_cnt:data.like_cnt
-            })
-            setLike(()=>{return project.like_cnt})
+            }
+            // like.current=project.current.like_cnt
+            setLike(project.current.like_cnt)
         } catch(e) {
             console.log(e);
         }
@@ -51,10 +54,14 @@ function Project() {
                         "Content-Type": `application/json`,
                     },
                 })
-            const like_cnt=response.data.like_cnt;
-            setLike(like_cnt)
-            console.log(click,like_cnt,like)
-            setClick(!click)
+            if (like_show>response.data.like_cnt){
+                click.current=false
+            }else{
+                click.current=true
+            }
+            // console.log("click",click.current,like.current,response.data.like_cnt)
+            // like.current=response.data.like_cnt
+            setLike(response.data.like_cnt)
         } catch(e) {
             console.log(e);
         }
@@ -63,16 +70,28 @@ function Project() {
     const project_id = useParams().projectId;   
     useEffect(() => {
         project_info_api({project_id});
-        setLike(project.like_cnt)
+        click.current=false
     }, [project_id]);
-
     return (
         <div className="Project">
-            <div id='ProjectInfo'>
-                <button id="like" onClick={handleOnclick}>{like}</button>
-                <p id="member">{project.team_member}</p>
-                <p id="hashtag">#{project.hashtag_main} #{project.hashtag_custom_a} #{project.hashtag_custom_b} #{project.hashtag_custom_c} </p>
-            </div>
+            <div className='ProjectInfo'>
+                <h2>{project.current.project_name}</h2>
+                <p id="member">{project.current.team_member}</p>
+                <div class="ProjectInfoWrapper">
+                    <button id="like" onClick={handleOnclick} className={`${click.current?"":"NoneClick"}`}>
+                        <div>
+                            <span class="material-symbols-outlined">favorite</span>
+                            {like_show}
+                        </div>
+                    </button>
+                    <p id="hashtag">
+                        <span>#{project.current.hashtag_main}</span>
+                        <span>#{project.current.hashtag_custom_a}</span>
+                        <span>#{project.current.hashtag_custom_b}</span>
+                        <span>#{project.current.hashtag_custom_c}</span>
+                    </p>
+                </div>
+                </div>
             <div className="ProjectContentWrapper">
                 <div className="ProjectContent" id="ProjectYoutube">
                     <p>YouTube</p>
@@ -85,7 +104,7 @@ function Project() {
                 </div>
                 <div className="ProjectContent" id="ProjectPDF">
                     <p>PDF</p>
-                    <embed className="ProjectPDF" src={project.project_pdf_url} type="application/pdf"/>
+                    <embed className="ProjectPDF" src={project.current.project_pdf_url} type="application/pdf"/>
                 </div>
             </div>
            
