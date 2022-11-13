@@ -37,7 +37,6 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type) VALUES (%s, %s, %s, %s, %s)"
     if request.method == 'GET': 
         content = '''
             <form action="/login" method="POST">
@@ -49,7 +48,8 @@ def login():
         '''
         return lfmodules.template(lfmodules.getContents(), content)
     elif request.method == 'POST':
-        
+        sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type, user_token) VALUES (%s, %s, %s, %s, %s, %s)"
+
         user_json = request.get_json()
         
         Student_ID = user_json['studentId']
@@ -60,9 +60,6 @@ def login():
 
         User_token = secrets.token_hex(nbytes=32)
 
-        #session[User_token] = user_json['name']
-        session[user_json['name']] = user_json['userType']
-
         conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
@@ -70,10 +67,20 @@ def login():
                        charset='utf8')
 
         with conn.cursor() as cur:
-            cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
+            cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type, User_token))
         conn.commit()
         
-        return jsonify({"login":"success","token":User_token})
+        sql2 = f"""SELECT user_id FROM user WHERE user_token = '{User_token}'"""
+
+        with conn.cursor() as cur:
+            cur.execute(sql2)
+        user_id_db_result = cur.fetchall()
+
+        print(user_id_db_result)
+
+        session[User_token] = user_id_db_result[0][0]
+
+        return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
 
 
@@ -83,7 +90,7 @@ def session_check():
 
     session_check_json = request.get_json()
 
-    if session_check_json['name'] in session:
+    if session_check_json['token'] in session:
         return jsonify({"session":"active"})
     else:
         return jsonify({"session":"deactive"})
