@@ -42,6 +42,7 @@ function Login() {
         })
 
         console.log(response);
+        localStorage.setItem('login-token',response.data.token)
         navigate("/main");
     } catch(e) {
       console.log(e);

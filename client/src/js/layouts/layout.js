@@ -13,10 +13,8 @@ import Class from "../Class";
 import Project from "../Project";
 
 const Layout = () => {
-  //Session 기능 테스트 - 승열
-  //Login.js 에서 axios통한 db등록 성공 시 사용자 name을 글로벌 스테이트로 설정 후 여기서 활용해야 할듯..
   const sessionCheckJson={
-    name:"손승열"
+    token:localStorage.getItem('login-token')
   }
   const navigate = useNavigate();
 
@@ -37,7 +35,8 @@ const Layout = () => {
     }
   }
 
-  // session_check_api(sessionCheckJson);
+  console.log(localStorage.getItem('login-token'))
+  session_check_api(sessionCheckJson);
 
   //-----------세션 체크 완료------------------
 
