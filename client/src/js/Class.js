@@ -8,17 +8,15 @@ function Class() {
     const classId = useParams().classId;
     const projectList=useRef([]);
     useEffect(() => {
-        axios.get('/class-project-list',{
-            params: {
-                class:classId
-            }
+        axios.get('/class',{
+            params: {class:classId}
         })
         .then(function (response) {
             projectList.current=[]
             response.data.projects.map((project,i)=>{
                 projectList.current.push(project)
             })
-            console.log(projectList.current)
+            console.log(response.data)
         })
         .catch(function (error) {
             console.log(error);
