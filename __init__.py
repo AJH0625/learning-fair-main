@@ -155,8 +155,7 @@ def project_layout_info():
                        charset='utf8')
 
     project_layout_info_request_json = request.get_json()
-    sql = f"""SELECT team_name, project name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
-
+    sql = f"""SELECT team_name, class_name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
     with conn.cursor() as cur:
         cur.execute(sql)
     project_layout_info_db_result = cur.fetchall()
@@ -166,7 +165,6 @@ def project_layout_info():
         "class_name":project_layout_info_db_result[0][1],
         "team_number":project_layout_info_db_result[0][2]
     }
-
     return jsonify(project_layout_info_json)
 
 
