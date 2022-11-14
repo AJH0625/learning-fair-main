@@ -59,7 +59,7 @@ const Header = () => {
           <Button id='Awards2' onClick={()=>handleOnClick('/awards')} value='시상식'/>
           </li>
           <li>
-          <Button id='Explore2' onClick={()=>handleOnClick('/project')} value='탐험하기'/>
+          <Button id='Explore2' onClick={()=>handleOnClick('/project/${Math.floor( jbRandom * 100 ) }')} value='탐험하기'/>
           </li>         
         </ul>
       </nav>
@@ -98,7 +98,7 @@ const Header = () => {
               <Button id='Awards2' onClick={()=>handleOnClick('/awards')} value='시상식'/>
               </li>
               <li>
-              <Button id='Explore2' onClick={()=>handleOnClick('/project')} value='탐험하기'/>
+              <Button id='Explore2' onClick={()=>handleOnClick('/project/${Math.floor( jbRandom * 100 ) }')} value='탐험하기'/>
               </li>             
           </ul>
         </nav>
