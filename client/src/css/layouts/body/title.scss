@@ -71,3 +71,17 @@ $target: #edfeedd3;
     transform: translateX(-230px);
   }
 }
+
+@media(max-width:1080px){
+  .MainTitle{
+    margin-left:5%;
+    margin-bottom:5%;
+  }
+  .focus{
+    font-size:40px;
+  }
+  .mask{
+    font-size:40px;
+    padding:7px;
+  }
+}

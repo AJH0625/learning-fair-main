@@ -62,3 +62,22 @@ h1 {
     }
   }
 }
+
+@media(max-width:1080px){
+  .Awards{
+    margin-left:5%;
+    margin-right:5%;
+    height:450px;
+  }
+  h1{
+    font-size:80px;
+    line-height:130%;
+    width:auto;
+    height:auto;
+    margin-top:-5%;
+  }
+  .AwardsWrapper{
+    width:auto;
+    height:auto;
+  }
+}
