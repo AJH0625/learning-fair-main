@@ -180,14 +180,19 @@ def class_list():
     class_name = request.args.get('class')
 
     sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}'"""
-
-    with conn.cursor() as cur:
-        cur.execute(sql)
-    class_project_list_db_result = cur.fetchall()
-
-    print(class_project_list_db_result)
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}' ORDER BY RAND"""
+    
+    conn.cursor.execute(sql)
+    class_project_list_db_result = conn.cursor.fetchall()
+    conn.cursor.commit()
+    
+    conn.cursor.execute(sql_)
+    class_project_list_db_result_rand = conn.cursor.fetchall()
+    conn.cursor.commit()
 
     class_project_list_json = {"projects":[]}
+    class_project_list_rand_json = {"projects":[]}
+    
     for class_project in class_project_list_db_result:
         project_container = {
             "team_name":class_project[0], 
@@ -202,10 +207,28 @@ def class_list():
             "project_thumbnail_url":class_project[9],
             "project_id":class_project[10]
         }
-
+        
+    for class_project in class_project_list_db_result_rand:
+        project_container_rand = {
+            "team_name":class_project[0], 
+            "team_member":class_project[1], 
+            "team_number":class_project[2], 
+            "hashtag_main":class_project[3], 
+            "hashtag_custom_a":class_project[4], 
+            "hashtag_custom_b":class_project[5], 
+            "hashtag_custom_c":class_project[6],
+            "project_name":class_project[7],
+            "like_cnt":class_project[8],
+            "project_thumbnail_url":class_project[9],
+            "project_id":class_project[10]
+        }
+        
         class_project_list_json["projects"].append(project_container)
+        class_project_list_rand_json["projects"].append(project_container_rand)
+        
+        list_json = {class_project_list_json, class_project_list_rand_json}
 
-    return jsonify(class_project_list_json)
+    return jsonify(list_json)
 
 @app.route('/tag')
 def tag_list():
@@ -255,7 +278,7 @@ def like_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {session[0]}"""
+    likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {session['User_id']}"""
     conn.cursor.execute(likesql)
     like_button = cur.fetchall()
     like_button = like_button[0][0]
