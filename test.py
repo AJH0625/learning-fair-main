@@ -7,6 +7,7 @@ import pymysql
 from datetime import timedelta
 import datetime
 import lfmodules
+import secrets
 
 load_dotenv()
 
@@ -84,13 +85,13 @@ def getTagContents(tag):
 def getUserID(user_token):
     getUserID = f"""
                 SELECT user_id
-                FROM project
-                WHERE user_name = {user_token}
+                FROM user
+                WHERE user_token = {user_token}
                 """
     with conn.cursor() as cur:
             cur.execute(getUserID)
-            user_data = int(cur.fetchall())
-    return user_data
+            user_data = cur.fetchall()
+    return user_data[0][0]
 
 def getClassContents(class_code):
     ClassContents = f"""
@@ -139,6 +140,17 @@ def login():
             cur.execute(sql, (User_name, Student_ID, User_major, User_login_time))
         conn.commit()
         
+        User_token = secrets.token_hex(nbytes=32)
+        sql2 = f"""SELECT user_id FROM user WHERE user_name = '{User_name}'"""
+
+        with conn.cursor() as cur:
+            cur.execute(sql2)
+        user_id_db_result = cur.fetchall()
+
+        print(user_id_db_result[0][0])
+
+        session['User_token'] = User_token
+        print(session['User_token'])
         print(session['User_name'])
         
         return redirect(url_for('index'))
@@ -146,7 +158,7 @@ def login():
 
 @app.route('/testjson')
 def testjson():
-    print(session['User_name'])
+    print(session['User_token'])
     return jsonify({"test":"hello"})
 
 @app.route('/tag')
@@ -189,7 +201,7 @@ def class_():
         '''
         return templates(getClassContents(class_code), content)
 
-@app.route('/project/<int:id>/')
+@app.route('/project/<int:id>')
 def project(id):
     Project = getProjects(id)
     title = Project[0][0]
@@ -209,20 +221,20 @@ def session_check():
 
 @app.route('/project/<int:pj_id>/like')
 def likes_project(pj_id):
-    us_id = getUserID(session['User_name'])
+    us_id = getUserID(session['User_token'])
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT 1 FROM like_table WHERE project_id == {pj_id} AND user_id == {us_id}"""
+    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id = {pj_id} AND user_id = {us_id}) AS t"""
     conn.cursor.execute(likesql)
     like_button = conn.cursor.fetchall()
     like_button = like_button[0][0]
     print(like_button)
     return like_button
 
-@app.route('/projects/<int:pj_id>/like/')
+@app.route('/projects/<int:pj_id>/like')
 def like_project(pj_id):
     global like_button
     if like_button == 0:
