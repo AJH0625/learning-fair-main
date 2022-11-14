@@ -189,8 +189,7 @@ def class_list():
         cur.execute(sql_)
         class_project_list_db_result_rand = cur.fetchall()
         
-    class_project_list_json = {"projects":[]}
-    class_project_list_rand_json = {"projects":[]}
+    class_project_list_json = {"projects":[],"projectsRand":[]}
     
     for class_project in class_project_list_db_result:
         project_container = {
@@ -206,6 +205,7 @@ def class_list():
             "project_thumbnail_url":class_project[9],
             "project_id":class_project[10]
         }
+        class_project_list_json["projects"].append(project_container)
         
     for class_project in class_project_list_db_result_rand:
         project_container_rand = {
@@ -222,12 +222,9 @@ def class_list():
             "project_id":class_project[10]
         }
         
-        class_project_list_json["projects"].append(project_container)
-        class_project_list_rand_json["projects"].append(project_container_rand)
-        
-        list_json = {class_project_list_json, class_project_list_rand_json}
+        class_project_list_json["projectsRand"].append(project_container_rand)
 
-    return jsonify(list_json)
+    return jsonify(class_project_list_json)
 
 @app.route('/tag')
 def tag_list():
