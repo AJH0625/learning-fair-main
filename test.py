@@ -5,8 +5,8 @@ from markupsafe import escape
 import os
 import pymysql
 from datetime import timedelta
-import lfmodules
 import datetime
+import lfmodules
 
 load_dotenv()
 
@@ -81,6 +81,17 @@ def getTagContents(tag):
             tag_data = cur.fetchall()
     return tag_data
 
+def getUserID(user_token):
+    getUserID = f"""
+                SELECT user_id
+                FROM project
+                WHERE user_name = {user_token}
+                """
+    with conn.cursor() as cur:
+            cur.execute(getUserID)
+            user_data = int(cur.fetchall())
+    return user_data
+
 def getClassContents(class_code):
     ClassContents = f"""
                    SELECT *
@@ -125,14 +136,17 @@ def login():
         session['User_name'] = request.form['User_name']
         
         with conn.cursor() as cur:
-            cur.execute(sql, (User_name, Student_ID, User_major, User_login_time, User_type))
+            cur.execute(sql, (User_name, Student_ID, User_major, User_login_time))
         conn.commit()
+        
+        print(session['User_name'])
         
         return redirect(url_for('index'))
         
 
 @app.route('/testjson')
 def testjson():
+    print(session['User_name'])
     return jsonify({"test":"hello"})
 
 @app.route('/tag')
@@ -193,7 +207,22 @@ def session_check():
     else:
         return jsonify({"session":"deactive"})
 
-@app.route('/project/<int:pj_id>/like/')
+@app.route('/project/<int:pj_id>/like')
+def likes_project(pj_id):
+    us_id = getUserID(session['User_name'])
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
+    likesql = f"""SELECT 1 FROM like_table WHERE project_id == {pj_id} AND user_id == {us_id}"""
+    conn.cursor.execute(likesql)
+    like_button = conn.cursor.fetchall()
+    like_button = like_button[0][0]
+    print(like_button)
+    return like_button
+
+@app.route('/projects/<int:pj_id>/like/')
 def like_project(pj_id):
     global like_button
     if like_button == 0:
