@@ -22,3 +22,12 @@
   justify-content: center;
   margin:3px;
 }
+
+@media(max-width:1080px){
+  .footerWrapper{
+    margin-top:160%;
+  }
+  .copyright *{
+    font-size:13px;
+  }
+}
