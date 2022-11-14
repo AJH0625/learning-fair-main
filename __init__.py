@@ -236,7 +236,7 @@ def tag_list():
 
     tag_code = request.args.get('tag')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}'"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}' ORDER BY RAND()"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
