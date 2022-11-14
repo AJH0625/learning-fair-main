@@ -1,12 +1,50 @@
-function Grid({project}) {
+import { useNavigate } from "react-router";
+
+function Grid({ project }) {
+  const navigate = useNavigate();
+
   return (
-    <div class="Grid">
-        <img src='{}' alt="썸네일"/>
-        <p class="GridLike">30</p>
-        <p class="GridProjectName">프로젝트 이름</p>
-        <p class="GridTeamName">팀명</p>
-        <p class="GridTeamMember">성이름, 성이름, 성이름, 성이름</p>
-        <p class="GridHashtag">#해시태그 #해시태그 #해시태그 #해시태그</p>
+    <div
+      className="Grid"
+      id={`projectId${project.project_id}`}
+      onClick={() => {
+        console.log(`/project/${project.project_id}`);
+        navigate(`/project/${project.project_id}`);
+      }}
+    >
+      <div className="GridWrapper">
+        <img
+          className="GridThumbnail"
+          width="280"
+          src={project.project_thumbnail_url}
+          alt="썸네일"
+          loading="lazy"
+        />
+      </div>
+      {/* <p className="GridLike">{project.like_cnt}</p> */}
+      <p className="GridTeam">
+        [{project.team_number}] {project.team_name}
+      </p>
+      <p className="GridProjectName">{project.project_name}</p>
+      <p className="GridTeamMember">{project.team_member}</p>
+      <p className="GridHashtag">
+        <span>#{project.hashtag_main}</span>
+        {project.hashtag_custom_a ? (
+          <span>#{project.hashtag_custom_a}</span>
+        ) : (
+          ""
+        )}
+        {project.hashtag_custom_b ? (
+          <span>#{project.hashtag_custom_b}</span>
+        ) : (
+          ""
+        )}
+        {project.hashtag_custom_c ? (
+          <span>#{project.hashtag_custom_c}</span>
+        ) : (
+          ""
+        )}
+      </p>
     </div>
   );
 }

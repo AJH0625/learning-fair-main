@@ -22,7 +22,8 @@
 
 .ProjectInfoWrapper{
     display: grid;
-    // justify-content: center;
+    align-items: center;
+    max-height: 70px;
     grid-template-areas: 'btn hashtag';
 }
 
@@ -34,14 +35,20 @@
 }
 
 #ProjectHashtag{
+    display: flex;
+    flex-wrap: wrap;
     grid-area: hashtag; 
-    text-align: end;
-    margin-top:20px;
+    margin:0 10px;
+    overflow:visible;
     span{
-        margin: 0 3px;
-        font-size: 20px;
+        letter-spacing: 1px;
+        width: auto;
+        height: 18px;
+        word-wrap: break-word;
+        margin:5px 3px;
+        font-size: 15px;
         border-radius: 1rem;
-        padding: 4px 15px 7px 10px;
+        padding: 7px 15px 7px 10px;
         // background-color: #00620a30;
         background-color: rgba(255, 255, 255, 0.554); 
         // text-decoration: 1px underline;

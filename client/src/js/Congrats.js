@@ -9,7 +9,6 @@ function Congrats() {
         axios.get('/congrats-videos')
         .then(function (response) {
             setURLs(response.data)
-            console.log(response.data)
         })
         .catch(function (error) {
             console.log(error);

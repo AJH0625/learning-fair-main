@@ -1,31 +1,32 @@
-import '../css/Class.css';
+import '../css/Class.scss';
 import { useParams } from 'react-router-dom';
 import Grid from './Grid/Grid';
 import axios from "axios";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function Class() {
     const classId = useParams().classId;
-    
+    const [projects, setprojects] = useState([]);
+    const projectList=useRef(projects);
+    axios.get('/class',{
+        params: {class:classId}
+    })
+    .then(function (response) {
+        setprojects(response.data.projects)
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
     useEffect(() => {
-        axios.get('/class-project-list',{
-            params: {
-                class:classId
-            }
-        })
-        .then(function (response) {
-            console.log(response)
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }, []);
-
+        projectList.current = projects; 
+     },[projects]) 
 
     return (
         <div className="Class">
-            <Grid/><Grid/><Grid/>
-            <Grid/><Grid/><Grid/>
+            { projectList.current.map((project)=>{
+                    return (<Grid project={project} key={project.project_id}/>)
+                }) 
+            }
         </div>
     );
 }
