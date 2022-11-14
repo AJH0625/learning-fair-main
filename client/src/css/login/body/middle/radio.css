@@ -48,4 +48,26 @@
     transition: 0.25s ease;
     box-shadow: inset 0 0 0 0.125em var(--primary-color);
 }
+
+@media(max-width: 1080px){
+    .radio{
+        width:auto;
+        height:auto;
+    }
+    .radioLabel{
+        width:auto;
+        height:auto;
+        padding:10px auto;
+        font-size:10pt;
+        top:-10px;
+    }
+    .radioInput{
+        width:auto;
+        height:auto;
+    }
+    .radioSpan{
+        width:auto;
+        height:auto;
+    }
+}
   

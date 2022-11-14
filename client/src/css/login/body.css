@@ -18,6 +18,20 @@
     grid-template-rows: [top] auto [middle] auto [base] auto;
 }
 
+@media(max-width: 1080px){
+    :root{       
+        width:auto;
+        height:auto;
+    }
+    .loginBody{
+        margin-left: 10%;
+        margin-right:10%;
+        margin-top:-2%;
+        width:auto;
+        height:auto;
+    }
+}
+
 @import url("body/top.css");
 
 @import url("body/middle.css");

@@ -12,3 +12,10 @@
     text-align: left;
     text-shadow: -1px 0 var(--txtborder1), 0 1px var(--txtborder1), 1px 0 var(--txtborder2), 0 -1px var(--txtborder2);
 }
+
+@media(max-width:1080px){
+    .loginBody-base p{
+        line-height:150%;
+        font-size: 100%;
+    }
+}

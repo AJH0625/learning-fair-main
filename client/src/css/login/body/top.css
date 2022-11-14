@@ -19,3 +19,22 @@
     grid-area: logoImg;
     width:100%;
 }
+
+@media(max-width:1080px){
+    .loginBody-top{
+        width:auto;
+        height:auto;
+    }
+    .logoText p{
+        width:auto;
+        height:auto;
+        font-size:100%;
+        line-height: 120%;
+    }
+    .logoImg{
+        width:150%;
+        height:auto;
+        margin-left: -100%;
+        margin-top: 50%;
+    }
+}

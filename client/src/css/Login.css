@@ -6,6 +6,16 @@
     position: relative;
     margin:100px 0;
 }
+@media (max-width: 1080px){
+    .Login{
+      width: auto;
+      height: auto;
+    }
+    body{
+      width: auto;
+      height: auto;
+    }
+  }
 
 /* loginHeader */
 @import url("login/header.css");

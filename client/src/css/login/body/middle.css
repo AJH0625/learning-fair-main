@@ -6,3 +6,11 @@
 @import url("middle/radio.css");
 
 @import url("middle/text.css");
+
+@media(max-width:1080px){
+    .loginBody-middle{
+        width:auto;
+        height:auto;
+        margin: 10% 0;
+    }
+}

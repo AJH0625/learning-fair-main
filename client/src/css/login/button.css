@@ -55,3 +55,16 @@ display: block;
   80% {transform: translateX(0) rotate(180deg);}
   100% {transform: translateX(0) rotate(360deg);}
 }
+
+@media(max-width: 1080px){
+  :root{
+    width:auto;
+    height:auto;
+  }
+  .loginButton{
+    width:80%;
+    height:auto;
+    font-size:100%;
+    top:-20px;
+  }
+}

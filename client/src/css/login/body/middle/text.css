@@ -58,3 +58,30 @@
     border-bottom: solid 1px #8aa1a1;
     outline:none;
 }
+
+@media(max-width:1080px){
+    .inputText{
+        width:auto;
+        height:auto;
+    }
+    .inputTextShow{
+        width:80%;
+        height:auto;
+        margin-left: -10%;
+    }
+    .input-box{
+        width:100%;
+        height:auto;
+        margin: 5px 0;
+    }
+    .input-box > .textInput{
+        width:auto;
+        font-size:11pt;
+    }
+    .textInput:placeholder-shown + label{
+        font-size:12pt;
+    }
+    .textInput:focus + label, .textLabel{
+        font-size:11pt;
+    }
+}
