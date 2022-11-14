@@ -22,7 +22,7 @@
 .Grid {
   word-break: keep-all;
   word-wrap: break-word;
-  width: 280px;
+  width: 300px;
   background-color: rgb(255, 255, 255);
   max-height: auto;
   border-radius: 0.5rem;
@@ -42,6 +42,7 @@
   }
 }
 .GridWrapper {
+  margin-bottom: 13px;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 }

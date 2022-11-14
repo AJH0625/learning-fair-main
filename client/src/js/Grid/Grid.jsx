@@ -15,7 +15,7 @@ function Grid({ project }) {
       <div className="GridWrapper">
         <img
           className="GridThumbnail"
-          width="260"
+          width="280"
           src={project.project_thumbnail_url}
           alt="썸네일"
           loading="lazy"
