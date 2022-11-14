@@ -253,7 +253,7 @@ def like_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {}"""
+    likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {session[0]}"""
     conn.cursor.execute(likesql)
     like_button = cur.fetchall()
     like_button = like_button[0][0]
