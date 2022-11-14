@@ -39,8 +39,9 @@ function Project() {
                 
                 like_cnt:data.like_cnt
             }
-            // like.current=project.current.like_cnt
             setLike(project.current.like_cnt)
+            click.current=false
+            console.log(click.current,like_show)
         } catch(e) {
             console.log(e);
         }
@@ -48,7 +49,7 @@ function Project() {
 
     async function handleOnclick(){
         try {
-            const response = await axios.get(`/project/${project_id}/like/`, 
+            const response = await axios.get(`/project/${project_id}/like`, 
                 JSON.stringify(), {
                     headers: {
                         "Content-Type": `application/json`,
@@ -59,8 +60,8 @@ function Project() {
             }else{
                 click.current=true
             }
-            // console.log("click",click.current,like.current,response.data.like_cnt)
-            // like.current=response.data.like_cnt
+            console.log(like_show,response.data.like_cnt)
+            console.log(click.current)
             setLike(response.data.like_cnt)
         } catch(e) {
             console.log(e);
@@ -70,17 +71,17 @@ function Project() {
     const project_id = useParams().projectId;   
     useEffect(() => {
         project_info_api({project_id});
-        click.current=false
     }, [project_id]);
+    
     return (
         <div className="Project">
             <div className='ProjectInfo'>
                 <h2>{project.current.project_name}</h2>
                 <p id="ProjectMember">{project.current.team_member}</p>
-                <div class="ProjectInfoWrapper">
+                <div className="ProjectInfoWrapper">
                     <button id="ProjectLike" onClick={handleOnclick} className={`${click.current?"":"NoneClick"}`}>
                         <div>
-                            <span class="material-symbols-outlined">favorite</span>
+                            <span className="material-symbols-outlined">favorite</span>
                             {like_show}
                         </div>
                     </button>
