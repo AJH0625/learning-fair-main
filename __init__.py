@@ -181,15 +181,14 @@ def class_list():
 
     sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}'"""
     sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}' ORDER BY RAND"""
+    with conn.cursor() as cur:
+        cur.execute(sql)
+        class_project_list_db_result = cur.fetchall()
     
-    conn.cursor.execute(sql)
-    class_project_list_db_result = conn.cursor.fetchall()
-    conn.cursor.commit()
-    
-    conn.cursor.execute(sql_)
-    class_project_list_db_result_rand = conn.cursor.fetchall()
-    conn.cursor.commit()
-
+    with conn.cursor() as cur:
+        cur.execute(sql_)
+        class_project_list_db_result_rand = cur.fetchall()
+        
     class_project_list_json = {"projects":[]}
     class_project_list_rand_json = {"projects":[]}
     
@@ -279,7 +278,8 @@ def like_project(pj_id):
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
     likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {session['User_id']}"""
-    conn.cursor.execute(likesql)
+    with conn.cursor() as cur:
+        cur.execute(likesql)
     like_button = cur.fetchall()
     like_button = like_button[0][0]
     
