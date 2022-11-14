@@ -180,7 +180,7 @@ def class_list():
     class_name = request.args.get('class')
 
     sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}'"""
-    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}' ORDER BY RAND"""
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}' ORDER BY RAND()"""
     with conn.cursor() as cur:
         cur.execute(sql)
         class_project_list_db_result = cur.fetchall()
