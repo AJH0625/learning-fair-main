@@ -83,13 +83,13 @@ def getTagContents(tag):
     return tag_data
 
 def getUserID(user_token):
-    getUserID = f"""
+    getUsID = f"""
                 SELECT user_id
                 FROM user
                 WHERE user_token = {user_token}
                 """
     with conn.cursor() as cur:
-            cur.execute(getUserID)
+            cur.execute(getUsID)
             user_data = cur.fetchall()
     return user_data[0][0]
 
@@ -155,6 +155,12 @@ def login():
         
         return redirect(url_for('index'))
         
+@app.route('/testid')
+def testid():
+    us_id = getUserID(session['User_token'])
+    print(us_id)
+    return jsonify({"test":"hello"})
+
 
 @app.route('/testjson')
 def testjson():
@@ -227,7 +233,7 @@ def likes_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id = {pj_id} AND user_id = {us_id}) AS t"""
+    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id == {pj_id} AND user_id == {us_id}) AS t"""
     conn.cursor.execute(likesql)
     like_button = conn.cursor.fetchall()
     like_button = like_button[0][0]
