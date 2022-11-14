@@ -6,28 +6,25 @@ import { useEffect, useRef, useState } from 'react';
 
 function Class() {
     const classId = useParams().classId;
-    const projectList=useRef([]);
+    const [projects, setprojects] = useState([]);
+    const projectList=useRef(projects);
+    axios.get('/class',{
+        params: {class:classId}
+    })
+    .then(function (response) {
+        setprojects(response.data.projects)
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
     useEffect(() => {
-        axios.get('/class',{
-            params: {class:classId}
-        })
-        .then(function (response) {
-            projectList.current=[]
-            response.data.projects.map((project,i)=>{
-                projectList.current.push(project)
-            })
-            console.log(response.data)
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }, []);
-
+        projectList.current = projects; 
+     },[projects]) 
 
     return (
         <div className="Class">
             { projectList.current.map((project)=>{
-                    return (<Grid project={project}/>)
+                    return (<Grid project={project} key={project.project_id}/>)
                 }) 
             }
         </div>
